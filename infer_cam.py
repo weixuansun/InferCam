@@ -25,29 +25,8 @@ classes = ['aeroplane','bicycle','bird','boat','bottle','bus','car',
            'cat','chair','cow','diningtable','dog','horse','motorbike',
            'person','pottedplant','sheep','sofa', 'train','tvmonitor']
 
-if __name__ == '__main__':
-    total_start = datetime.now()
 
-    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
-    torch.backends.cudnn.benchmark = False
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--weights", required=True, type=str)
-    parser.add_argument("--network", default="network.resnet38_cls_old", type=str)
-    parser.add_argument("--infer_list", default="voc12/train.txt", type=str)
-    parser.add_argument("--num_workers", default=8, type=int)
-    parser.add_argument("--voc12_root", default='/home/users/u5876230/pascal_aug/VOCdevkit/VOC2012/', type=str)
-    parser.add_argument("--aug_path", default='/home/users/u5876230/fbwss_output/baseline_trainaug_aug/', type=str)
-    parser.add_argument("--low_alpha", default=4, type=int)
-    parser.add_argument("--high_alpha", default=16, type=int)
-    parser.add_argument("--out_cam", default=None, type=str)
-    parser.add_argument("--heatmap", default=None, type=str)
-    parser.add_argument("--mass_center", default=None, type=str)
-    parser.add_argument("--out_cam_pred", default=None, type=str)
-
-    args = parser.parse_args()
-
+def infer_split_cam(args):
     model = getattr(importlib.import_module(args.network), 'Net')()
     model.load_state_dict(torch.load(args.weights))
 
@@ -60,17 +39,14 @@ if __name__ == '__main__':
     infer_dataset = voc12.data.VOC12ClsDatasetMSFsplit(args.infer_list, voc12_root=args.voc12_root, 
                                                         aug_path = args.aug_path, scales=(1, 0.5, 1.5, 2.0),
                                                         inter_transform=torchvision.transforms.Compose(
-                                                       [np.asarray,
+                                                    [np.asarray,
                                                         model.normalize,
                                                         imutils.HWC_to_CHW]))
 
     infer_data_loader = DataLoader(infer_dataset, shuffle=False, num_workers=args.num_workers, pin_memory=True)
 
-    cam_mask_dict = {}
+    # cam_mask_dict = {}
     for iter, (img_name, output_list, label) in enumerate(infer_data_loader):
-        image_start = datetime.now()
-        start = datetime.now()
-
         img_name = img_name[0]; label = label[0]
         cam_dict = {}
         for split_index, img_list in enumerate(output_list):
@@ -84,7 +60,7 @@ if __name__ == '__main__':
                 last_left_area_matrix = np.ones((orig_img_size[0], orig_img_size[1]))
                 pixel_sum = orig_img_size[0] * orig_img_size[1]
             else: # each split
-                aug_img_dir = '/home/users/u5876230/fbwss_output/baseline_trainaug_aug/'
+                aug_img_dir = args.aug_path
                 orig_img = cv2.imread(os.path.join(aug_img_dir, '{}_{}.jpg'.format(img_name, split_index)))
                 orig_img_size = orig_img.shape[:2]
                 cam_matrix = np.zeros((20, orig_img_size[0], orig_img_size[1]))
@@ -180,3 +156,25 @@ if __name__ == '__main__':
             pred = np.argmax(np.concatenate((bg_score, norm_cam)), 0)
             scipy.misc.imsave(os.path.join(args.out_cam_pred, img_name + '.png'), pred.astype(np.uint8))
         print(iter)
+
+
+if __name__ == '__main__':
+    total_start = datetime.now()
+
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--weights", required=True, type=str)
+    parser.add_argument("--network", default="network.resnet38_cls_old", type=str)
+    parser.add_argument("--infer_list", default="voc12/train.txt", type=str)
+    parser.add_argument("--num_workers", default=8, type=int)
+    parser.add_argument("--voc12_root", default='/home/users/u5876230/pascal_aug/VOCdevkit/VOC2012/', type=str)
+    parser.add_argument("--aug_path", default='/home/users/u5876230/fbwss_output/baseline_trainaug_aug/', type=str)
+    parser.add_argument("--out_cam", default=None, type=str)
+    parser.add_argument("--heatmap", default=None, type=str)
+    parser.add_argument("--out_cam_pred", default=None, type=str)
+
+    args = parser.parse_args()
+    infer_split_cam(args)
+
