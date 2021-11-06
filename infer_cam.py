@@ -150,10 +150,6 @@ def infer_split_cam(args):
         if args.out_cam is not None:
             np.save(os.path.join(args.out_cam, img_name + '.npy'), cam_dict)
 
-        if args.out_cam_pred is not None:
-            bg_score = [np.ones_like(cam_matrix[0])*0.2]
-            pred = np.argmax(np.concatenate((bg_score, norm_cam)), 0)
-            scipy.misc.imsave(os.path.join(args.out_cam_pred, img_name + '.png'), pred.astype(np.uint8))
         print(iter)
 
 
@@ -172,7 +168,6 @@ if __name__ == '__main__':
     parser.add_argument("--split_path", default='/home/users/u5876230/fbwss_output/baseline_trainaug_aug/', type=str)
     parser.add_argument("--out_cam", default=None, type=str)
     parser.add_argument("--heatmap", default=None, type=str)
-    parser.add_argument("--out_cam_pred", default=None, type=str)
 
     args = parser.parse_args()
     infer_split_cam(args)
