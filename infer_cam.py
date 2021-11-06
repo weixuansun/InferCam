@@ -36,7 +36,7 @@ def infer_split_cam(args):
     model_replicas = torch.nn.parallel.replicate(model, list(range(n_gpus)))
 
     infer_dataset = voc12.data.VOC12ClsDatasetMSFsplit(args.infer_list, voc12_root=args.voc12_root, 
-                                                        aug_path = args.aug_path, scales=(1, 0.5, 1.5, 2.0),
+                                                        aug_path = args.split_path, scales=(1, 0.5, 1.5, 2.0),
                                                         inter_transform=torchvision.transforms.Compose(
                                                     [np.asarray,
                                                         model.normalize,
@@ -59,7 +59,7 @@ def infer_split_cam(args):
                 last_left_area_matrix = np.ones((orig_img_size[0], orig_img_size[1]))
                 pixel_sum = orig_img_size[0] * orig_img_size[1]
             else: # each split
-                aug_img_dir = args.aug_path
+                aug_img_dir = args.split_path
                 orig_img = cv2.imread(os.path.join(aug_img_dir, '{}_{}.jpg'.format(img_name, split_index)))
                 orig_img_size = orig_img.shape[:2]
                 cam_matrix = np.zeros((20, orig_img_size[0], orig_img_size[1]))
@@ -152,12 +152,11 @@ def infer_split_cam(args):
 
         print(iter)
 
-
 if __name__ == '__main__':
     total_start = datetime.now()
 
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--weights", required=True, type=str)
