@@ -1,7 +1,7 @@
 # Inferring the Class Conditional Response Map for Weakly Supervised Semantic Segmentation
 
 This repository contains the code for inferring better class activation maps from a classifier without re-training.
-With a trained classification networks, this method pushs the class activation maps to cover more object areas, which may facilitate down-stream weakly supervised semantic segmentation and object localization.
+With a trained classification networks, this method pushs the class activation maps to cover more object areas without any network training, which may facilitate down-stream weakly supervised semantic segmentation and object localization.
 For example:
 
 
