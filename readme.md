@@ -40,6 +40,8 @@ Refinement: We adopt the random walk method via affinity to refine the map as pi
 > Note: This work is accepted to WACV 2022, and was originally proposed in November/2020.
 
 
+## Reference:
+1. Jiwoon Ahn and Suha Kwak. Learning pixel-level semantic affinity with image-level supervision for weakly supervised semantic segmentation. CVPR, 2018.
 
 
 
