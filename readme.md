@@ -28,6 +28,8 @@ First, run the baseline cam inference to obtain the mass center of every activat
 Second, run the inference code to generate refined class activation maps: 
     
     python infer_cam.py --weights [Your classification weights path] --split_path [The path of the splitted images] --out_cam [Path to save the output CAM] --heatmap [If you want to visualize the refined CAM] 
+
+You can replace this network with other pre-trained networks and obtain corresponding class activation maps.
     
 ## Pseudo label and semantic segmentation training
 Refinement: We adopt the random walk method via affinity to refine the map as pixel-wise pseudo ground truths for semantic segmentation. Please refer to [psa](https://github.com/jiwoon-ahn/psa)
