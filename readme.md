@@ -16,7 +16,7 @@ W Sun, J Zhang, N Barnes - arXiv preprint arXiv:2110.14309, 2021
 
 ## Instructions:
 First, run the baseline cam inference to obtain the mass center of every activation regions, then split the image into patches according to the mass center:
-**classification weight for Pascal voc can be obtained from:  https://1drv.ms/u/s!Ak3sXyXVg7818CLKis4D2CXKXV6D?e=0k9HWo**
+**classification weight for Pascal voc can be obtained from:[psa](https://github.com/jiwoon-ahn/psa) or  https://1drv.ms/u/s!Ak3sXyXVg7818CLKis4D2CXKXV6D?e=0k9HWo**
 
 
     python split_img.py --weights [Your classification weights path] --voc12_root [Pascal VOC root path]   --split_path [path to save the splitted image] --heatmap [If you want to visualize the baseline CAM] 
