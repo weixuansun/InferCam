@@ -10,8 +10,13 @@ For example:
 ##
 If you use this code in an academic context, please cite the following references:
 
-Inferring the Class Conditional Response Map for Weakly Supervised Semantic Segmentation
-W Sun, J Zhang, N Barnes - arXiv preprint arXiv:2110.14309, 2021
+@inproceedings{sun2022inferring,
+  title={Inferring the Class Conditional Response Map for Weakly Supervised Semantic Segmentation},
+  author={Sun, Weixuan and Zhang, Jing and Barnes, Nick},
+  booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision},
+  pages={2878--2887},
+  year={2022}
+}
 
 ## Enviroment:
 
