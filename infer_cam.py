@@ -18,6 +18,7 @@ from scipy import ndimage
 import pickle
 from datetime import datetime
 import time
+# from network import resnet38_cls_sccam
 
 
 classes = ['aeroplane','bicycle','bird','boat','bottle','bus','car',
@@ -27,6 +28,7 @@ classes = ['aeroplane','bicycle','bird','boat','bottle','bus','car',
 
 def infer_split_cam(args):
     model = getattr(importlib.import_module(args.network), 'Net')()
+
     model.load_state_dict(torch.load(args.weights))
 
     model.eval()
@@ -117,7 +119,7 @@ def infer_split_cam(args):
                     cam_mask_diff = (np.sum(last_left_area_matrix) - np.sum(left_area_matrix)) / pixel_sum
                     last_left_area_matrix = left_area_matrix
                     left_area_matrix = torch.from_numpy(left_area_matrix).unsqueeze(0).unsqueeze(0).float()
-                    if cam_mask_diff < 0.01:
+                    if cam_mask_diff < 0.02:
                         break
 
             if split_index > 0:
@@ -156,7 +158,7 @@ if __name__ == '__main__':
     total_start = datetime.now()
 
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-    os.environ["CUDA_VISIBLE_DEVICES"] = "4"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "4,5,6,7"
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--weights", required=True, type=str)
