@@ -19,7 +19,7 @@ If you use this code in an academic context, please cite the following reference
         }
 
 ## Enviroment:
-
+install following requirements.txt
 
 ## Instructions:
 First, run the baseline cam inference to obtain the mass center of every activation regions, then split the image into patches according to the mass center:
