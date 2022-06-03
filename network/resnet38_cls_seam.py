@@ -1,3 +1,4 @@
+# 'Self-supervised Equivariant Attention Mechanism for Weakly Supervised Semantic Segmentaion.
 import torch
 import torch.nn as nn
 import torch.sparse as sparse

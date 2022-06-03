@@ -1,3 +1,4 @@
+# 'Weakly-Supervised Semantic Segmentation via Sub-category Exploration'
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
